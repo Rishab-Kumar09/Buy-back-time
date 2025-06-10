@@ -1,12 +1,11 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import type { Activity, AIRecommendation } from '@/lib/types'
-import { predictValueImpact } from '@/lib/services/ai'
+import { VALUE_IMPACT_LEVELS, DELEGATION_TYPES } from '@/lib/constants'
 
 export default function Home() {
-  const [insights, setInsights] = React.useState<AIRecommendation[]>([])
-  const [loading, setLoading] = React.useState(false)
+  const [insights, setInsights] = useState([])
+  const [loading, setLoading] = useState(false)
 
   const fetchInsights = async () => {
     try {
@@ -34,41 +33,9 @@ export default function Home() {
     }
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetchInsights()
   }, [])
-
-  // This would come from calendar integration in production
-  const upcomingMeetings = [
-    {
-      title: "Board Meeting",
-      duration: 60,
-      valueImpact: '10x_strategic',
-      participants: 8,
-      aiSuggestion: "Keep - Critical strategic discussion"
-    },
-    {
-      title: "Team Updates",
-      duration: 30,
-      valueImpact: 'delegate_or_eliminate',
-      participants: 12,
-      aiSuggestion: "Delegate to EA - Can be handled via async updates"
-    }
-  ]
-
-  // This would be AI-generated in production
-  const aiRecommendations = [
-    {
-      type: 'delegation',
-      recommendation: "Weekly team sync can be handled by your EA. This will free up 1 hour/week.",
-      impact: { timeFreed: 60, valueIncrease: 5000 }
-    },
-    {
-      type: 'scheduling',
-      recommendation: "Schedule strategic planning during your high-energy hours (9-11 AM).",
-      impact: { timeFreed: 0, valueIncrease: 10000 }
-    }
-  ]
 
   return (
     <main className="min-h-screen p-8 bg-gray-50">

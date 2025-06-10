@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { generateActivityInsights } from '@/lib/services/ai'
 import { fetchCalendarEvents, analyzeCalendarPatterns } from '@/lib/services/calendar'
 
-export async function POST(request: Request) {
+export async function POST(request) {
   try {
     // Get date range from request
     const { startDate, endDate } = await request.json()

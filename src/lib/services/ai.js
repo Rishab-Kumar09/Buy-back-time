@@ -1,14 +1,11 @@
 import OpenAI from 'openai'
-import type { Activity, AIRecommendation } from '@/lib/types'
+import { VALUE_IMPACT_LEVELS, DELEGATION_TYPES } from '@/lib/constants'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 })
 
-export async function generateActivityInsights(
-  activities: Activity[],
-  calendarPatterns: any
-): Promise<AIRecommendation[]> {
+export async function generateActivityInsights(activities, calendarPatterns) {
   try {
     const prompt = `
       Analyze these activities and calendar patterns for a business leader:
@@ -48,14 +45,7 @@ export async function generateActivityInsights(
   }
 }
 
-export async function predictValueImpact(
-  title: string,
-  description: string
-): Promise<{
-  valueImpact: string;
-  delegationType: string;
-  estimatedValue: number;
-}> {
+export async function predictValueImpact(title, description) {
   try {
     const prompt = `
       Analyze this activity and recommend how it should be handled:
@@ -90,8 +80,8 @@ export async function predictValueImpact(
   } catch (error) {
     console.error('Error predicting value impact:', error)
     return {
-      valueImpact: '1x_tactical',
-      delegationType: 'keep_strategic',
+      valueImpact: VALUE_IMPACT_LEVELS.TACTICAL_1X,
+      delegationType: DELEGATION_TYPES.KEEP_STRATEGIC,
       estimatedValue: 0
     }
   }
