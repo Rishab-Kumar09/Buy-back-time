@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import type { Activity } from '@/lib/types'
+import type { Activity, ValueImpactLevel, DelegationType } from '@/lib/types'
 
 interface ActivityFormProps {
   onSubmit: (activity: Omit<Activity, 'id' | 'userId'>) => void
@@ -12,9 +12,9 @@ type ActivityFormData = {
   description: string;
   duration: number;
   energyLevel: number;
-  category: Activity['category'];
-  delegationType: Activity['delegationType'];
-  estimatedHourlyRate: number;
+  valueImpact: ValueImpactLevel;
+  delegationType: DelegationType;
+  estimatedValueCreation: number;
 }
 
 export default function ActivityForm({ onSubmit }: ActivityFormProps) {
@@ -23,9 +23,9 @@ export default function ActivityForm({ onSubmit }: ActivityFormProps) {
     description: '',
     duration: 30,
     energyLevel: 3,
-    category: 'high_value',
-    delegationType: 'self',
-    estimatedHourlyRate: 0,
+    valueImpact: '1x_tactical',
+    delegationType: 'keep_strategic',
+    estimatedValueCreation: 0,
   })
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -39,15 +39,15 @@ export default function ActivityForm({ onSubmit }: ActivityFormProps) {
       description: '',
       duration: 30,
       energyLevel: 3,
-      category: 'high_value',
-      delegationType: 'self',
-      estimatedHourlyRate: 0,
+      valueImpact: '1x_tactical',
+      delegationType: 'keep_strategic',
+      estimatedValueCreation: 0,
     })
   }
 
   return (
     <form onSubmit={handleSubmit} className="card">
-      <h2>Log Activity</h2>
+      <h2>Log Strategic Activity</h2>
       <div className="form-group">
         <label htmlFor="title">Activity Title</label>
         <input
@@ -99,48 +99,52 @@ export default function ActivityForm({ onSubmit }: ActivityFormProps) {
       </div>
 
       <div className="form-group">
-        <label htmlFor="category">Category</label>
+        <label htmlFor="valueImpact">Value Impact Level</label>
         <select
-          id="category"
+          id="valueImpact"
           className="input"
-          value={formData.category}
-          onChange={(e) => setFormData({ ...formData, category: e.target.value as Activity['category'] })}
+          value={formData.valueImpact}
+          onChange={(e) => setFormData({ ...formData, valueImpact: e.target.value as ValueImpactLevel })}
         >
-          <option value="high_value">High Value</option>
-          <option value="low_value">Low Value</option>
+          <option value="10x_strategic">10x Strategic ($100k+ impact)</option>
+          <option value="5x_growth">5x Growth ($50k+ impact)</option>
+          <option value="2x_operational">2x Operational ($10k+ impact)</option>
+          <option value="1x_tactical">1x Tactical ($1k+ impact)</option>
+          <option value="delegate_or_eliminate">Should Delegate/Eliminate</option>
         </select>
       </div>
 
       <div className="form-group">
-        <label htmlFor="delegationType">Delegation Type</label>
+        <label htmlFor="delegationType">Recommended Action</label>
         <select
           id="delegationType"
           className="input"
           value={formData.delegationType}
-          onChange={(e) => setFormData({ ...formData, delegationType: e.target.value as Activity['delegationType'] })}
+          onChange={(e) => setFormData({ ...formData, delegationType: e.target.value as DelegationType })}
         >
-          <option value="self">Self</option>
-          <option value="ai">AI</option>
-          <option value="ea">EA</option>
+          <option value="keep_strategic">Keep (Strategic)</option>
+          <option value="delegate_to_ai">Delegate to AI</option>
+          <option value="delegate_to_ea">Delegate to EA</option>
+          <option value="delegate_to_team">Delegate to Team</option>
           <option value="eliminate">Eliminate</option>
         </select>
       </div>
 
       <div className="form-group">
-        <label htmlFor="rate">Hourly Rate ($)</label>
+        <label htmlFor="value">Estimated Value Creation ($)</label>
         <input
           type="number"
-          id="rate"
+          id="value"
           className="input"
-          value={formData.estimatedHourlyRate}
-          onChange={(e) => setFormData({ ...formData, estimatedHourlyRate: Number(e.target.value) })}
+          value={formData.estimatedValueCreation}
+          onChange={(e) => setFormData({ ...formData, estimatedValueCreation: Number(e.target.value) })}
           min="0"
-          step="0.01"
+          step="1000"
           required
         />
       </div>
 
-      <button type="submit" className="button">Save Activity</button>
+      <button type="submit" className="button">Log Strategic Activity</button>
     </form>
   )
 } 
