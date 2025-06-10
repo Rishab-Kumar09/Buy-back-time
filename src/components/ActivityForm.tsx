@@ -7,8 +7,18 @@ interface ActivityFormProps {
   onSubmit: (activity: Omit<Activity, 'id' | 'userId'>) => void
 }
 
+type ActivityFormData = {
+  title: string;
+  description: string;
+  duration: number;
+  energyLevel: number;
+  category: Activity['category'];
+  delegationType: Activity['delegationType'];
+  estimatedHourlyRate: number;
+}
+
 export default function ActivityForm({ onSubmit }: ActivityFormProps) {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ActivityFormData>({
     title: '',
     description: '',
     duration: 30,
